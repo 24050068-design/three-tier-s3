@@ -1,29 +1,5 @@
-# Chạy riêng backend (trong thư mục backend/):
-#   docker compose up -d --build                  -> dùng DB trong .env (vd. RDS)
-#   docker compose --profile local up -d --build  -> chạy kèm MySQL container (DB_HOST=db trong .env)
-services:
-  db:
-    # Chỉ chạy khi dùng DB local: docker compose --profile local up -d
-    
-    image: mysql
-    container_name: todo_mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: todo_db
-      MYSQL_USER: todo_user
-      MYSQL_PASSWORD: todo_pass
-    ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ../db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
 
+services:
   backend:
     build: .
     container_name: todo_backend
@@ -31,18 +7,7 @@ services:
     env_file: .env
     ports:
       - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
-        # Không bắt buộc: khi dùng RDS, service db bị tắt.
-        required: false
-
 # Network chung để frontend (compose riêng) gọi được backend:8000.
 networks:
   default:
     name: todo_net
-
-volumes:
-  mysql_data:
-    # Giữ tên volume cũ để không mất dữ liệu MySQL local.
-    name: someone_mysql_data

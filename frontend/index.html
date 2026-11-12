@@ -9,11 +9,20 @@
   <body>
     <main class="container">
       <h1>Todo App</h1>
-      <p class="sub">HTML + FastAPI + MySQL</p>
+      <p class="sub">HTML + FastAPI + MySQL (RDS) + S3</p>
 
       <form id="add-form" class="form">
         <input id="add-input" placeholder="Nhập việc cần làm..." maxlength="255" />
-        <button type="submit">Thêm</button>
+        <button type="submit" id="add-btn">Thêm</button>
+        <!-- Ảnh minh chứng (không bắt buộc): backend lưu lên S3 cùng công việc. -->
+        <div class="attach">
+          <label class="file-pick">
+            <input id="add-image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden />
+            📎 Đính kèm ảnh minh chứng
+          </label>
+          <span id="add-image-name" class="file-name">Chưa chọn ảnh (tối đa 5 MB)</span>
+          <button type="button" id="add-image-clear" class="secondary small" hidden>Bỏ ảnh</button>
+        </div>
       </form>
 
       <div id="error" class="error" hidden></div>
@@ -22,8 +31,17 @@
       <ul id="list" class="list"></ul>
 
       <p id="empty" hidden>Chưa có việc nào.</p>
+
+      <h2 id="gallery-title" class="gallery-title">Ảnh từ S3</h2>
+      <div id="gallery-error" class="error" hidden></div>
+      <p id="gallery-empty" hidden>Chưa có ảnh nào trong S3.</p>
+      <div id="gallery" class="gallery"></div>
     </main>
 
+    <script>
+      // Mở bằng Live Server (cổng 5500): không có nginx proxy, gọi thẳng backend `python main.py`.
+      if (location.port === "5500") window.API_URL = "http://127.0.0.1:8000/api";
+    </script>
     <script src="app.js"></script>
   </body>
 </html>

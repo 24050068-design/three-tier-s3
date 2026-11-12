@@ -4,3 +4,10 @@ node_modules/
 dist/
 .env
 .venv/
+
+# Khoá SSH và state Terraform (chứa mật khẩu DB) không được đưa lên git
+*.pem
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars

@@ -4,3 +4,5 @@ SQLAlchemy==2.0.35
 PyMySQL==1.1.1
 cryptography==43.0.1
 python-dotenv==1.0.1
+boto3==1.35.36
+python-multipart==0.0.12

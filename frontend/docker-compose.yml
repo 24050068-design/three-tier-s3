@@ -10,7 +10,8 @@ services:
     # BACKEND_URL trong .env được truyền vào nginx lúc chạy.
     env_file: .env
     ports:
-      - "3000:80"
+      # Cổng trên máy host: mặc định 3000, trên EC2 đặt FRONTEND_PORT=80 trong .env.
+      - "${FRONTEND_PORT:-3000}:80"
 
 # Network chung với backend (compose riêng), ai chạy trước thì tạo.
 networks:
